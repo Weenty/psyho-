@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   Маил <input id="email"  type="email" name='email'> <br>
+   Пароль <input id="password" type="password" name='password'>
+   <br>
+    <button name='button' id="send">
+        Отправить
+    </button>
+</body>
+</html>
+<script>
+
+
+// Пример отправки POST запроса:
+async function postData(url = '', data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *client
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+
+
+    let sendButton = document.querySelector("#send")
+
+       sendButton.onclick = function() {
+
+        let email = document.querySelector("#email").value
+        let password = document.querySelector("#password").value
+
+               postData('http://localhost:3000/register', {
+                   email: email, 
+                   password: password
+               })
+               .catch(err => console.log(err))
+    }
+</script>
