@@ -1,0 +1,232 @@
+body{
+    margin: 0;
+    font-family: 'Roboto',sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+     
+}
+*,
+*:before,
+*:after{
+    box-sizing: border-box;
+}
+h1,h3,h4,h5,h6{
+    margin: 0;
+}
+.container{
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.header {
+    width: 100%;
+    
+}
+.header_logo{
+    margin-top: 8px;
+   align-items:center ;
+}
+.header_inner{
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+}
+.nav{
+    margin-left: 20px;
+    font-size: 16px;
+    line-height: 150%;
+}
+.nav_link{
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 15px;
+    color: black;
+    text-decoration: none;
+    transition: color .1s linear;
+}
+.nav_link:hover{
+    color:blue;
+}
+.intro{
+
+    height: 1090px;
+    width: 100%;
+    background: url("/img/image\ 31.png") center no-repeat;
+    -webkit-backdrop-size:cover;
+    background-size: cover;
+}
+.intro_block{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+   
+}
+.intro_header{
+    align-items: flex-start;
+    font-size: 65px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 74px;
+    margin-top: 150px;
+    margin-bottom: 30px;
+    color: white;
+    font-family: Georgia,;
+    max-width: 680px;
+}
+.intro_text{
+    margin-bottom: 30px;
+    font-size: 20px;
+    line-height: 31px;
+    max-width: 420px;
+    color: white;
+    
+}
+.intro_button{
+
+}
+.btn{
+    width: 230px;
+    height: 65px;
+    background: white;
+padding: 15px 30px;
+border: 2px solid white;
+}
+.consult{
+
+}
+.consult_header{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+.consult_logo{
+
+}
+.cousult_header_1{
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 157%;
+}
+.cousult_header_2{
+    font-family: Georgia;
+font-style: normal;
+font-weight: bold;
+font-size: 50px;
+line-height: 157%;
+color: #927C67; 
+}
+.consult_header_text{
+    width: 700px;
+    height: 270px;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 150%;
+}
+.consult_main{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 50px;
+  
+}
+.consult_main_block_1{
+    
+width: 380px;
+}
+.consult_main_block_2{
+    width: 380px; 
+}
+.consult_main_block_3{
+    width: 380px; 
+}
+.main_info{
+
+}
+.main_number{
+    font-family: Georgia;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 150px;
+    line-height: 150%;
+    /* identical to box height, or 225px */
+    
+    text-align: center;
+    
+    color: rgba(1, 153, 109, 0.2);
+}
+.main_header{
+    font-family: Georgia;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 150%;
+    /* identical to box height, or 45px */
+    
+    text-align: center;
+    
+    color: #000000;
+}
+.main_text{
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 150%;
+    /* or 30px */
+    
+    
+    color: #424242;
+}
+.video_block{
+    
+background: #927C67;
+}
+.video_block_hold{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 900px;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+.video_text_block{
+    display: flex;
+    flex-flow: row wrap;
+    align-content: space-between;
+}
+.img_comp_2{
+    width: 800px;
+    height: 470px;
+}
+.video_text{
+    font-family: Georgia;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 157%;
+    /* or 79px */
+    
+    
+    color: #FFFFFF;
+}
+.intro_button{
+    margin-top: 160px;
+}
+
