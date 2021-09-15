@@ -9,6 +9,34 @@ var winston = require('winston'),
   expressWinston = require('express-winston');
 
 
+function ExQueary(query) {
+  let conn = mysql.createConnection(params);
+  conn.connect(function (err) {
+    if (err) {
+      console.error("ОШИБКА: " + err.message);
+    }
+    else {
+      console.log("Подключение к серверу MySQL успешно установлено");
+    }
+  });
+  conn.query(query, (err, result, field) => {
+    if (!err) {
+      resu = result
+      console.log(resu)
+    }
+    else {
+      console.error("ОШИБКА: " + err.message);
+    }
+    conn.end(err => {
+      if (err) {
+        console.error("ОШИБКА: " + err.message);
+      }
+      else {
+        console.log('Произошло отключение от базы данных');
+      }
+    })
+  });
+}
 
 
 app.use(express.urlencoded({
@@ -34,70 +62,44 @@ const params = {
   password: "root", //NTI20201106_sqsw33179
 }
 
+function sleep(ms) {
+
+  return new Promise(function (resolve) {
+
+    setTimeout(resolve, ms);
+  });
+}
 
 
-
+let resu
 let email
 let names
-let conn = mysql.createConnection(params);
 let token
-
-conn.connect(function (err) {
-  if (err) {
-    return console.error("ОШИБКА: " + err.message);
-  }
-  else {
-    console.log("Подключение к серверу MySQL успешно установлено");
-  }
-});
+let vopros
 
 app.get("/confirm", function (request, response) {
   let medie = request.query.token
-  let result1
-    let query1 = "SELECT id from emails"
-    conn.query(query1, (err, result, field) => {
-      if (!err) {
-        result1 = result
-      }
-      else {
-        console.log(err)
-      }
-    });
-    let vopros
-    for (let i = 0; i <= result1.length; i++) {
-      if (medie == result[i]) {
-        vopros = true
-      }
-      else {
-        vopros = false
-      }
-    }
-    if (vopros) {
-      response.send('Йоу, бро, ты подтвердил свою почту, ты такой крутой, убейся ')
-      let query = "INSERT INTO (status) VALUES('1')"
-      conn.query(query, (err, result, field) => {
-        if (!err) {
-        }
-        else {
-          console.log(err)
-        }
-      });
+  let query1 = "SELECT id from emails"
+  ExQueary(query1)
+  console.log(resu)
+  let result1 = resu
+  for (let i = 0; i < result1.length; i++) {
 
-
+    if (medie == result1[i].id) {
+      vopros = true
     }
     else {
-      response.send('<h1>request error</h1>')
+      vopros = false
     }
-    conn.end(err => {
-      if (err) {
-        console.log(err);
-        return err;
-      }
-      else {
-        console.log('Произошло отключение от базы данных');
-      }
-    })
-  
+  }
+  if (vopros) {
+    response.send('<h1>Вы успешно подтвердили почту</h1>')
+    let query = "INSERT INTO emails (status) VALUES('1')"
+    ExQueary(query)
+  }
+  else {
+    response.send('<h1>request error</h1>')
+  }
 })
 
 
@@ -147,16 +149,6 @@ app.get("/", function (request, response) {
 
 app.post("/register", urlencodedParser, function (request, response) {
   try {
-    conn.connect(function (err) {
-      if (err) {
-        return console.error("ОШИБКА: " + err.message);
-      }
-      else {
-        console.log("Подключение к серверу MySQL успешно установлено");
-      }
-    });
-
-
     console.log('request.body')
     console.log(request.body)
     if (!request.body) return response.sendStatus(400);
@@ -170,22 +162,7 @@ app.post("/register", urlencodedParser, function (request, response) {
     names = "'" + request.body.names + "'"
     // let query="INSERT chlen(id, nazvanie, info) VALUES ("+ id + "," + nazvanie + ", " + info + ")"
     let query = "INSERT INTO emails(id, email, name, status) VALUES (" + id + "," + email + ", " + names + ", " + 0 + ")"
-    conn.query(query, (err, result, field) => {
-      if (!err) {
-      }
-      else {
-        console.log(err)
-      }
-    });
-    conn.end(err => {
-      if (err) {
-        console.log(err);
-        return err;
-      }
-      else {
-        console.log('Произошло отключение от базы данных');
-      }
-    })
+    ExQueary(query)
   }
   catch {
     console.log(e)
