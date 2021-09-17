@@ -6,14 +6,14 @@ const app = express()
 const { v4: uuidv4 } = require('uuid');
 const urlencodedParser = express.urlencoded({ extended: false });
 const mysql = require('mysql');
-var winston = require('winston'),
+const winston = require('winston'),
   expressWinston = require('express-winston');
   const params = {
     host: "localhost",
     port: '3306', //3306  
     user: "root",
     database: "psyho", //m toxa
-    password: "NTI20201106_sqsw33179", //NTI20201106_sqsw33179
+    password: "root", //NTI20201106_sqsw33179
   }
   let connection = mysql.createConnection(params);
   const query = util.promisify(connection.query).bind(connection);
@@ -43,7 +43,7 @@ app.use(expressWinston.logger({
 
 
 
-
+app.use('/', express.static(__dirname + '/'));
 
 let email = 0
 let names = 0
@@ -67,51 +67,15 @@ app.get("/confirm", async function (request, response) {
     }
   }
   if (vopros) {
-    response.send('<h1>Вы успешно подтвердили почту</h1>')
-    let query = "INSERT INTO emails (status) VALUES('1')"
+    response.send('<h1>Вы успешно подтвердили почту, посетите нашего <a href=https://t.me/Toxa_Psyh_bot> бота</a> для удобного взаимодействия с нашими специалистами!</h1>')
+    let query = "UPDATE emails SET status=1 WHERE id=" + "'" + medie + "'" +""
+    response.redirect("https://t.me/Toxa_Psyh_bot")
     await ExQueary(query)
   }
   else {
     response.send('<h1>request error</h1>')
   }
 })
-
-
-
-app.get("/sendmessage",function (request, response) {
-  async function main() {
-    fs.readFile('./master/simple.html', { encoding: 'utf-8' }, (err, data) => {
-      let transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true, // true for 465, false for other ports
-        aсuth: {
-          user: 'whateverstyle2014@gmail.com', // generated ethereal user
-          pass: 'GlGm33179_1106', // generated ethereal password
-        },
-      });
-      let htmlFile1
-      let htmlFile2
-      htmlFile1 = fs.readFileSync('./master/simple1.html', { encoding: 'utf-8' })
-      htmlFile2 = fs.readFileSync('./master/simple2.html', { encoding: 'utf-8' })
-      
-      let htmlFile = htmlFile1 + uuidv4() + htmlFile2
-      console.log(htmlFile);
-      htmlFile = htmlFile.replace("#replaceWithLink#", "myOtherLinkTest")
-      if (err) {
-        console.warn("Error getting password reset template: " + err);
-      } else {
-       transporter.sendMail({
-          from: 'whateverstyle2014@gmail.com',
-          to: 'whateverstyle2014@gmail.com',
-          subject: "Ваш психотерапевт",
-          html: htmlFile,
-        });
-      }
-    });
-  }
-  main().catch(console.error);
-});
 
 app.get("/", function (request, response) {
   try {
@@ -133,12 +97,41 @@ app.post("/register", urlencodedParser, function (request, response) {
       names: request.body.password
     })
     token = uuidv4()
-    let id = "'" + token + "'";
-    email = "'" + request.body.email + "'"
-    names = "'" + request.body.names + "'"
+    let id = token
+    email = request.body.email
+    names = request.body.names
     // let query="INSERT chlen(id, nazvanie, info) VALUES ("+ id + "," + nazvanie + ", " + info + ")"
-    let query = "INSERT INTO emails(id, email, name, status) VALUES (" + id + "," + email + ", " + names + ", " + 0 + ")"
+    let query = "INSERT INTO emails(id, email, name, status) VALUES ("+ "'" + id + "'" + "," + "'" + email + "'" + ", " + "'" + names + "'" + ", " + 0 + ")"
     ExQueary(query)
+    async function main() {
+      fs.readFile('./master/simple.html', { encoding: 'utf-8' }, (err, data) => {
+        var transporter = nodemailer.createTransport({
+          service: 'Gmail',
+          auth: {
+              user: 'findo3184@gmail.com',
+              pass: 'i33a05an'
+          }
+          });
+        let htmlFile1
+        let htmlFile2
+        htmlFile1 = fs.readFileSync('./master/simple1.html', { encoding: 'utf-8' })
+        htmlFile2 = fs.readFileSync('./master/simple2.html', { encoding: 'utf-8' })
+        
+        let htmlFile = htmlFile1 + id + htmlFile2
+        htmlFile = htmlFile.replace("#replaceWithLink#", "myOtherLinkTest")
+        if (err) {
+          console.warn("Error getting password reset template: " + err);
+        } else {
+          transporter.sendMail({
+            from: 'findo3184@gmail.com',
+              to: email,
+              subject: 'Ваш психотерапевт',
+              html: htmlFile
+            });
+        }
+      });
+    }
+    main().catch(console.error);
   }
   catch {
     console.log(e)
