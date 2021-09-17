@@ -295,3 +295,8 @@ border: 2px gold;
 .footer_block{
     background: #C1AE9B;
 }
+.form_block{
+    margin: 0 auto;
+    max-width: 1000px;
+    max-height: 450px;
+}

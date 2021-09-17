@@ -1,3 +1,4 @@
+var util = require('util')
 const express = require('express')
 const fs = require('fs');
 const nodemailer = require("nodemailer");
@@ -7,35 +8,20 @@ const urlencodedParser = express.urlencoded({ extended: false });
 const mysql = require('mysql');
 var winston = require('winston'),
   expressWinston = require('express-winston');
+  const params = {
+    host: "localhost",
+    port: '3306', //3306  
+    user: "root",
+    database: "psyho", //m toxa
+    password: "NTI20201106_sqsw33179", //NTI20201106_sqsw33179
+  }
+  let connection = mysql.createConnection(params);
+  const query = util.promisify(connection.query).bind(connection);
 
-
-function ExQueary(query) {
-  let conn = mysql.createConnection(params);
-  conn.connect(function (err) {
-    if (err) {
-      console.error("ОШИБКА: " + err.message);
-    }
-    else {
-      console.log("Подключение к серверу MySQL успешно установлено");
-    }
-  });
-  conn.query(query, (err, result, field) => {
-    if (!err) {
-      resu = result
-      console.log(resu)
-    }
-    else {
-      console.error("ОШИБКА: " + err.message);
-    }
-    conn.end(err => {
-      if (err) {
-        console.error("ОШИБКА: " + err.message);
-      }
-      else {
-        console.log('Произошло отключение от базы данных');
-      }
-    })
-  });
+async function ExQueary(query1) {
+    const rows = await query(query1);
+    console.log(rows);
+return rows
 }
 
 
@@ -54,37 +40,25 @@ app.use(expressWinston.logger({
     winston.format.json()
   )
 }));
-const params = {
-  host: "localhost",
-  port: '3306', //3306  
-  user: "root",
-  database: "psyho", //m toxa
-  password: "root", //NTI20201106_sqsw33179
-}
-
-function sleep(ms) {
-
-  return new Promise(function (resolve) {
-
-    setTimeout(resolve, ms);
-  });
-}
 
 
-let resu
-let email
-let names
-let token
-let vopros
 
-app.get("/confirm", function (request, response) {
-  let medie = request.query.token
+
+
+let email = 0
+let names = 0
+let token = 0
+let vopros = 0
+
+app.get("/confirm", async function (request, response) {
+  let medie = request.query.token 
   let query1 = "SELECT id from emails"
-  ExQueary(query1)
-  console.log(resu)
-  let result1 = resu
+  let result1 = await ExQueary(query1)
   for (let i = 0; i < result1.length; i++) {
-
+    console.log("medie")
+    console.log(medie)
+    console.log("result1[i].id")
+    console.log(result1[i].id)
     if (medie == result1[i].id) {
       vopros = true
     }
@@ -95,7 +69,7 @@ app.get("/confirm", function (request, response) {
   if (vopros) {
     response.send('<h1>Вы успешно подтвердили почту</h1>')
     let query = "INSERT INTO emails (status) VALUES('1')"
-    ExQueary(query)
+    await ExQueary(query)
   }
   else {
     response.send('<h1>request error</h1>')
@@ -104,30 +78,32 @@ app.get("/confirm", function (request, response) {
 
 
 
-app.get("/sendmessage", function (request, response) {
+app.get("/sendmessage",function (request, response) {
   async function main() {
     fs.readFile('./master/simple.html', { encoding: 'utf-8' }, (err, data) => {
       let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
         port: 465,
         secure: true, // true for 465, false for other ports
-        auth: {
-          user: 'findo3184@gmail.com', // generated ethereal user
-          pass: 'i33a05an', // generated ethereal password
+        aсuth: {
+          user: 'whateverstyle2014@gmail.com', // generated ethereal user
+          pass: 'GlGm33179_1106', // generated ethereal password
         },
       });
       let htmlFile1
       let htmlFile2
       htmlFile1 = fs.readFileSync('./master/simple1.html', { encoding: 'utf-8' })
       htmlFile2 = fs.readFileSync('./master/simple2.html', { encoding: 'utf-8' })
+      
       let htmlFile = htmlFile1 + uuidv4() + htmlFile2
+      console.log(htmlFile);
       htmlFile = htmlFile.replace("#replaceWithLink#", "myOtherLinkTest")
       if (err) {
         console.warn("Error getting password reset template: " + err);
       } else {
-        transporter.sendMail({
-          from: '"Ваш психотерапевт"<flaky12r@mail.ru>',
-          to: 'flaky12r@mail.ru',
+       transporter.sendMail({
+          from: 'whateverstyle2014@gmail.com',
+          to: 'whateverstyle2014@gmail.com',
           subject: "Ваш психотерапевт",
           html: htmlFile,
         });
